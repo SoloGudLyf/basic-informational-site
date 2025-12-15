@@ -10,17 +10,31 @@ const server = http.createServer((req, res) => {
       if (err) console.error(err);
       res.write(data);
       res.end();
+      return;
     });
   }
 
   const contentType = getContentType(req.url);
 
   res.writeHead(200, { "Content-Type": contentType });
-  const pathName = url.parse(req.url).pathname;
+  let pathName = url.parse(req.url).pathname;
 
+  if (!path.extname(req.url)) pathName += ".html";
   // Read requested file
   fs.readFile(pathName.slice(1), function (err, data) {
-    if (err) console.error(err);
+    if (err) {
+      console.error(err);
+      fs.readFile("404.html", function (err, data) {
+        if (err) {
+          console.error(err);
+        }
+        res.write(data);
+        res.end();
+        return;
+      });
+      res.end();
+      return;
+    }
     res.write(data);
     res.end();
   });
@@ -44,6 +58,8 @@ function getContentType(filePath) {
       return "image/png";
     case ".gif":
       return "image/gif";
+    case ".ico":
+      return "image/svg";
     default:
       return "text/html";
   }

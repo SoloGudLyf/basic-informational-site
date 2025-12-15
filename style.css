@@ -1,19 +1,25 @@
-*{
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    line-height: 1.5;
+* {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  line-height: 1.5;
 }
 
-body{
-    width: 50vw;
-    margin: auto;
+body {
+  width: 55vw;
+  margin: auto;
 }
 
-.nav-bar{
-    display: flex;
-    justify-content: center;
-    gap: 20px;
+.nav-bar {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
 }
 
-footer{
-    margin-top: 40px;
+footer {
+  margin-top: 40px;
+}
+
+@media (max-width: 600px) {
+  body {
+    width: 95vw;
+  }
 }
