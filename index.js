@@ -13,28 +13,33 @@ app.listen(PORT, (error) => {
   console.log(`My first Express app - listening on port ${PORT}!`);
 });
 
-app.get("/", (req, res, next) => {
+app.get("/", (req, res) => {
   const filePath = path.join(__dirname, "index.html");
   res.sendFile(filePath);
 });
 
-app.get("/index.html", (req, res, next) => {
+app.get("/index.html", (req, res) => {
   const filePath = path.join(__dirname, "index.html");
   res.sendFile(filePath);
 });
 
-app.get("/style.css", (req, res, next) => {
+app.get("/style.css", (req, res) => {
   const filePath = path.join(__dirname, "style.css");
   res.sendFile(filePath);
 });
 
-app.get("/about.html", (req, res, next) => {
+app.get("/about.html", (req, res) => {
   const filePath = path.join(__dirname, "about.html");
   res.sendFile(filePath);
 });
 
-app.get("/contact-me.html", (req, res, next) => {
+app.get("/contact-me.html", (req, res) => {
   const filePath = path.join(__dirname, "contact-me.html");
   res.sendFile(filePath);
 });
 
+app.use((req, res) => {
+  res.status(404);
+  const filePath = path.join(__dirname, "404.html");
+  res.sendFile(filePath);
+});
