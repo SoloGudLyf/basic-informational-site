@@ -1,66 +1,40 @@
-import http from "node:http";
-import fs from "node:fs";
-import url from "node:url";
-import path from "node:path";
+const express = require("express");
+const path = require("path");
+const app = express();
 
-const server = http.createServer((req, res) => {
-  // Read requested css file
-  if (req.url.match(".css$")) {
-    fs.readFile("style.css", function (err, data) {
-      if (err) console.error(err);
-      res.write(data);
-      res.end();
-      return;
-    });
+const PORT = 3000;
+app.listen(PORT, (error) => {
+  // This is important!
+  // Without this, any startup errors will silently fail
+  // instead of giving you a helpful error message.
+  if (error) {
+    throw error;
   }
-
-  const contentType = getContentType(req.url);
-
-  res.writeHead(200, { "Content-Type": contentType });
-  let pathName = url.parse(req.url).pathname;
-
-  if (!path.extname(req.url)) pathName += ".html";
-  // Read requested file
-  fs.readFile(pathName.slice(1), function (err, data) {
-    if (err) {
-      console.error(err);
-      fs.readFile("404.html", function (err, data) {
-        if (err) {
-          console.error(err);
-        }
-        res.write(data);
-        res.end();
-        return;
-      });
-      res.end();
-      return;
-    }
-    res.write(data);
-    res.end();
-  });
+  console.log(`My first Express app - listening on port ${PORT}!`);
 });
 
-server.listen(8080);
+app.get("/", (req, res, next) => {
+  const filePath = path.join(__dirname, "index.html");
+  res.sendFile(filePath);
+});
 
-function getContentType(filePath) {
-  const extname = path.extname(filePath);
-  switch (extname) {
-    case ".html":
-      return "text/html";
-    case ".css":
-      return "text/css";
-    case ".js":
-      return "text/javascript";
-    case ".jpg":
-    case ".jpeg":
-      return "image/jpeg";
-    case ".png":
-      return "image/png";
-    case ".gif":
-      return "image/gif";
-    case ".ico":
-      return "image/svg";
-    default:
-      return "text/html";
-  }
-}
+app.get("/index.html", (req, res, next) => {
+  const filePath = path.join(__dirname, "index.html");
+  res.sendFile(filePath);
+});
+
+app.get("/style.css", (req, res, next) => {
+  const filePath = path.join(__dirname, "style.css");
+  res.sendFile(filePath);
+});
+
+app.get("/about.html", (req, res, next) => {
+  const filePath = path.join(__dirname, "about.html");
+  res.sendFile(filePath);
+});
+
+app.get("/contact-me.html", (req, res, next) => {
+  const filePath = path.join(__dirname, "contact-me.html");
+  res.sendFile(filePath);
+});
+
